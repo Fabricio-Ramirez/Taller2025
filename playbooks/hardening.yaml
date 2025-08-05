@@ -11,10 +11,39 @@
       update_cache: true
     notify: Reboot Server
 
+  - name: No permitir Login como Root
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      insertafter: '^#PermitRootLogin'
+      line: PermitRootLogin no
+    notify: Reboot daemon ssh
+
+  - name: Existe dir /opt/test
+    ansible.builtin.file:
+      path: /opt/test
+      state: directory
+      owner: nobody
+      group: nogroup
+      mode: '0777'
+    register: resultadoDir
+
+  - name: Debug resultado
+    ansible.builtin.debug:
+      msg: "{{ resultadoDir }}"
+    when: resultadoDir.changed 
+
+
+
+
   handlers:
 
   - name: Reboot Server
     ansible.builtin.reboot:
+
+  - name: Reboot daemon ssh
+    ansible.builtin.systemd_service:
+      name: sshd
+      state: restarted
 
 
 
