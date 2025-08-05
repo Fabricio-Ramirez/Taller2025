@@ -1,0 +1,28 @@
+----
+- name: Play para la instalacion y Config inicial de WebSRV
+  hosts: webserver
+  become: yes
+  
+  tasks:
+  
+  - name: Instalacion de paquete HTTPD
+    ansible.builtin.dnf:
+      name: httpd
+      state: present
+
+  - name: Iniciamos y habilitamos HTTPD
+    ansible.builtin.systemd_service: 
+      name: httpd
+      enabled: true
+      state: started
+
+  - name: Modificamos y habilitamos Firewalld
+    ansible.posix.firewalld:
+      service: "{{ item }}"
+      state: enabled
+      permanent: true
+      immediate: true
+    loop:
+      - http
+      - https
+
