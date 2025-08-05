@@ -26,4 +26,4 @@
       state: directory
       owner: picard
       group: enterprise
-      mode: '0775'
+      mode: '2770'
