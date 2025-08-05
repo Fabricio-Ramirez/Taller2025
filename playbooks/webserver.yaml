@@ -1,4 +1,4 @@
-----
+---
 - name: Play para la instalacion y Config inicial de WebSRV
   hosts: webserver
   become: yes
@@ -26,3 +26,10 @@
       - http
       - https
 
+  - name: Archivo template 
+    ansible.builtin.template:
+      src: ../templates/index.j2
+      dest: /var/www/html/index.html
+      owner: apache
+      group: apache 
+      mode: u=rw,g=r,o=r
