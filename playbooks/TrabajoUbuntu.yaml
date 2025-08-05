@@ -1,0 +1,29 @@
+---
+- hosts: ubuntu
+  become: yes
+
+  tasks:
+
+  - name: Crear grupo enterprise
+    ansible.builtin.group:
+      name: enterprise
+      state: present
+
+  - name: Crear usuarios (lista)
+    ansible.builtin.user:
+      name: "{{ item }}"
+      groups: enterprise
+      append: yes
+    loop:
+      - picard
+      - data
+      - crusher.md
+      - troy
+
+  - name: Crear Dir /var/enterprise 
+    ansible.builtin.file:
+      path: /var/enterprise
+      state: directory
+      owner: picard
+      group: enterprise
+      mode: '0775'
