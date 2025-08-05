@@ -7,12 +7,12 @@
   
   - name: Instalacion de paquete HTTPD
     ansible.builtin.dnf:
-      name: httpd
+      name: "{{ package }}"
       state: present
 
   - name: Iniciamos y habilitamos HTTPD
     ansible.builtin.systemd_service: 
-      name: httpd
+      name: "{{ service }}"
       enabled: true
       state: started
 
@@ -22,9 +22,7 @@
       state: enabled
       permanent: true
       immediate: true
-    loop:
-      - http
-      - https
+    loop: "{{ services_firewall }}"
 
   - name: Archivo template 
     ansible.builtin.template:

@@ -1,0 +1,4 @@
+---
+package: httpd
+service: httpd
+services_firewall: [http,https]
